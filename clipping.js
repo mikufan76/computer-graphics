@@ -24,8 +24,16 @@ function inside(x, y, left, bottom, right, top) {
     return true
 }
 
-function intersects(x,y, left, bottom, right, top) {
-    
+function intersects(x, y, left, bottom, right, top) {
+    if (x > right) {
+
+    }
+    else if (x < left) {
+    }
+
+    if (y > top) {
+    } else if (y < bottom) {
+    }
 }
 
 function output(x, y, left, bottom, right, top) {
@@ -43,10 +51,34 @@ function output(x, y, left, bottom, right, top) {
     return [x, y]
 }
 
-function clipLine(vertices, left, bottom, right, tops) {
+function clipLine(vertices, left, bottom, right, top) {
     let newVerts = []
+    const inside = 0;
+    const left = 1;
+    const right = 2;
+    const bottom = 4;
+    const top = 8;
+
+    let code = inside;
+    for (let i = 0; i < vertices; i) {
+        let x1 =
+    }
 
     return newVerts
+}
+
+function cohenSutherlandCode(x, y, left, bottom, right, top) {
+    if (x > right) {
+        code |= right;
+    } else if (x < left) {
+        code |= left;
+    }
+    if (y > top) {
+        code |= top;
+    } else if (y < bottom) {
+        code |= bottom;
+    }
+    return code;
 }
 
 //
@@ -80,7 +112,7 @@ let line5
 let line6
 
 // line or poly mode
-let doPoly = true
+let doPoly = false
 
 function drawClipRegion(llx, lly, urx, ury) {
     stroke(255, 255, 255)
@@ -135,47 +167,47 @@ function drawClipPoly() {
     clippedPoly = clipPoly(quad1, 10, 110, 50, 150)
     drawFilledPoly(clippedPoly, 255, 0, 0)
 
-      // second polygon: entirely outside region
-      drawClipRegion(10, 110, 50, 150);
-      drawPolyEdges (quad2, 0, 255, 0);
-      clippedPoly = clipPoly (quad2, 10, 110, 50, 150);
-      drawFilledPoly (clippedPoly, 255, 0, 0);
+    // second polygon: entirely outside region
+    drawClipRegion(10, 110, 50, 150);
+    drawPolyEdges(quad2, 0, 255, 0);
+    clippedPoly = clipPoly(quad2, 10, 110, 50, 150);
+    drawFilledPoly(clippedPoly, 255, 0, 0);
 
-      // third polygon: halfway outside on left
-      drawClipRegion(30, 10, 70, 80);
-      drawPolyEdges (quad3, 0, 0, 255);
-      clippedPoly = clipPoly (quad3, 30, 10, 70, 80);
-      drawFilledPoly (clippedPoly, 0, 0, 255);
+    // third polygon: halfway outside on left
+    drawClipRegion(30, 10, 70, 80);
+    drawPolyEdges(quad3, 0, 0, 255);
+    clippedPoly = clipPoly(quad3, 30, 10, 70, 80);
+    drawFilledPoly(clippedPoly, 0, 0, 255);
 
-      // fourth polygon: part outside on right
-      drawClipRegion(10, 110, 50, 150);
-      drawPolyEdges (quad4, 255, 0, 255);
-      clippedPoly = clipPoly (quad4, 10, 110, 50, 150);
-      drawFilledPoly (clippedPoly, 255, 0, 255);
+    // fourth polygon: part outside on right
+    drawClipRegion(10, 110, 50, 150);
+    drawPolyEdges(quad4, 255, 0, 255);
+    clippedPoly = clipPoly(quad4, 10, 110, 50, 150);
+    drawFilledPoly(clippedPoly, 255, 0, 255);
 
-      // fifth polygon: outside on left and bottom
-      drawClipRegion(90, 34, 120, 60);
-      drawPolyEdges (pent1, 255, 128, 255);
-      clippedPoly = clipPoly (pent1, 90, 34, 120, 60);
-      drawFilledPoly (clippedPoly, 255, 128, 255);
+    // fifth polygon: outside on left and bottom
+    drawClipRegion(90, 34, 120, 60);
+    drawPolyEdges(pent1, 255, 128, 255);
+    clippedPoly = clipPoly(pent1, 90, 34, 120, 60);
+    drawFilledPoly(clippedPoly, 255, 128, 255);
 
-      // sixth polygon:outside on top, right, and bottom
-      drawClipRegion(90, 80, 130, 110);
-      drawPolyEdges (hept1, 179, 179, 179);
-      clippedPoly = clipPoly (hept1, 90, 80, 130, 110);
-      drawFilledPoly (clippedPoly, 179, 179, 179);
+    // sixth polygon:outside on top, right, and bottom
+    drawClipRegion(90, 80, 130, 110);
+    drawPolyEdges(hept1, 179, 179, 179);
+    clippedPoly = clipPoly(hept1, 90, 80, 130, 110);
+    drawFilledPoly(clippedPoly, 179, 179, 179);
 
-      // seventh polygon: surrounds the clip region
-      drawClipRegion(221, 80, 251, 101);
-      drawPolyEdges (nona1, 222, 185, 134);
-      clippedPoly = clipPoly (nona1, 221, 80, 251, 101);
-      drawFilledPoly (clippedPoly, 222, 185, 134);
+    // seventh polygon: surrounds the clip region
+    drawClipRegion(221, 80, 251, 101);
+    drawPolyEdges(nona1, 222, 185, 134);
+    clippedPoly = clipPoly(nona1, 221, 80, 251, 101);
+    drawFilledPoly(clippedPoly, 222, 185, 134);
 
-      // eighth polygon: outside on all 4 edges
-      drawClipRegion(198, 198, 276, 258);
-      drawPolyEdges (deca1, 255, 165, 0);
-      clippedPoly = clipPoly (deca1, 198, 198, 276, 258);
-      drawFilledPoly (clippedPoly, 255, 165, 0);
+    // eighth polygon: outside on all 4 edges
+    drawClipRegion(198, 198, 276, 258);
+    drawPolyEdges(deca1, 255, 165, 0);
+    clippedPoly = clipPoly(deca1, 198, 198, 276, 258);
+    drawFilledPoly(clippedPoly, 255, 165, 0);
 }
 
 function drawCanvas() {
