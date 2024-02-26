@@ -23,7 +23,7 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
     y1 = y2;
   }
 
-  logger(`p0: ${x0}, ${y0}\np1: ${x1}, ${y1}`)
+  logger(`UPDATE COORDS\np0: ${x0}, ${y0}\np1: ${x1}, ${y1}`)
 
   // blue Start point
   fill(0, 0, 255)
@@ -37,8 +37,8 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
   let dy = y1 - y0;
   let dx = x1 - x0;
   const m = dy / dx;
-  const validSlope = (m <= 1 && m >= -1);
-  logger(`dy: ${dy}\ndx: ${dx}\nslope:${m}\nvalid slope: ${validSlope}`)
+  const validSlope = (Math.abs(dy) <= Math.abs(dx));
+  logger(`dy: ${dy}\ndx: ${dx}\nslope:${m}\nslope: ${validSlope ? "VALID" : "INVALID"}`)
 
   // slope is not! swap coordinates
   if (!validSlope) {
@@ -50,7 +50,7 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
     x1 = y1;
     y1 = temp;
 
-    logger(`Update Coords\np0: ${x0}, ${y0}\np1: ${x1}, ${y1}`)
+    logger(`UPDATE COORDS: \np0: ${x0}, ${y0}\np1: ${x1}, ${y1}`)
 
   }
 
@@ -72,14 +72,19 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
   // decision param: east or north east
   let d = dE - dx; // 2*dy-dx
 
-  logger(`dE = ${dE} = 2 * ${y1} - ${y0}`)
-  logger(`dNe =${dNe} = 2 * ((${y1} - ${y0})- (${x1}-${x0}))`)
+  // logger(`dE = ${dE} = 2 * ${y1} - ${y0}`)
+  // logger(`dNe =${dNe} = 2 * ((${y1} - ${y0})- (${x1}-${x0}))`)
   logger(`CALC END\ndx: ${dx}\ndy: ${dy}\nDE: ${dE}\ndNE: ${dNe}\nd: ${d}`);
 
   let x = x0, y = y0;
   const yDir = y0 > y1 ? -1 : 1;
 
+
+  logger(`FINAl COORDS: \np0: ${x0}, ${y0}\np1: ${x1}, ${y1}`)
+
+
   for (x; x <= x1; x++) {
+    logger(`Plot: ${x},${y}`)
     !validSlope ? setPixel(y, x, r, g, b) : setPixel(x, y, r, g, b);
     // update decision param
     if (d <= 0) {
@@ -237,14 +242,14 @@ function drawTheLines() {
 
     // adjust for axes
     translate(canvasx, canvasy);
-    //line(line1[0], line1[1], line1[2], line1[3]);
-    //line(line2[0], line2[1], line2[2], line2[3]);
-    //line(line3[0], line3[1], line3[2], line3[3]);
-    //line(line4[0], line4[1], line4[2], line4[3]);
-    //line(line5[0], line5[1], line5[2], line5[3]);
+    line(line1[0], line1[1], line1[2], line1[3]);
+    line(line2[0], line2[1], line2[2], line2[3]);
+    line(line3[0], line3[1], line3[2], line3[3]);
+    line(line4[0], line4[1], line4[2], line4[3]);
+    line(line5[0], line5[1], line5[2], line5[3]);
     line(line6[0], line6[1], line6[2], line6[3]);
-    //line(line7[0], line7[1], line7[2], line7[3]);
-    //line(line8[0], line8[1], line8[2], line8[3]);
+    line(line7[0], line7[1], line7[2], line7[3]);
+    line(line8[0], line8[1], line8[2], line8[3]);
   }
 
   else {
@@ -270,15 +275,15 @@ function drawTheLines() {
     // drawLine(line5[0] + canvasx, line5[1] + canvasy,
     //   line5[2] + canvasx, line5[3] + canvasy,
     //   myr, myg, myb);
+    // drawLine(line7[0] + canvasx, line7[1] + canvasy,
+    //   line7[2] + canvasx, line7[3] + canvasy,
+    //   myr, myg, myb);
+    // drawLine(line8[0] + canvasx, line8[1] + canvasy,
+    //   line8[2] + canvasx, line8[3] + canvasy,
+    //   myr, myg, myb);
     drawLine(line6[0] + canvasx, line6[1] + canvasy,
       line6[2] + canvasx, line6[3] + canvasy,
       myr, myg, myb);
-    //drawLine(line7[0] + canvasx, line7[1] + canvasy,
-    //  line7[2] + canvasx, line7[3] + canvasy,
-    //  myr, myg, myb);
-    //drawLine(line8[0] + canvasx, line8[1] + canvasy,
-    //  line8[2] + canvasx, line8[3] + canvasy,
-    //  myr, myg, myb);
   }
 
 }
