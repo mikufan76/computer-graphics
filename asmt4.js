@@ -78,13 +78,56 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
 }
 
 function drawTriangle(p1x, p1y, p2x, p2y, p3x, p3y, r, g, b) {
-  
+  const points = [{ x: p1x, y: p1y }, { x: p2x, y: p2y }, { x: p3x, y: p3y }
+  ];
+
+  const xCoords = [...points.sort((a, b) => { return a.x - b.x })];
+  const yCoords = [...points.sort((a, b) => {
+    let res = a.y - b.y;
+    if (res === 0) {
+      res = a.x - b.x;
+    }
+    return res;
+  })];
+
+  // Order points in counter-clockwise order
+  // start with smallest y coordinate
+  let startPoint = yCoords[0];
+  const egg = [p1, p2, p3] = [startPoint, ...xCoords.filter((point) => point !== startPoint)]
+  fill(255, 0, 0)
+  circle(p1.x, p1.y, 5)
+  fill(0, 255, 0)
+  circle(p2.x, p2.y, 5)
+  fill(0, 0, 255,)
+  circle(p3.x, p3.y, 5)
+
+
+  logger(JSON.stringify(egg));
+
+
+  const xMin = xCoords[0].x, xMax = xCoords[2].x;
+  const yMin = yCoords[0].y, yMax = yCoords[2].y;
+
+  for (let x = xMin; x <= xMax; x++) {
+    for (let y = yMin; y <= yMax; y++) {
+      const w0 = edge(p1.x, p1.y, p2.x, p2.y, x, y);
+      const w1 = edge(p2.x, p2.y, p3.x, p3.y, x, y);
+      const w2 = edge(p3.x, p3.y, p1.x, p1.y, x, y);
+
+      if (w1 > 0 && w0 > 0 && w2 > 0) {
+        setPixel(x, y, 255, 0, 0)
+      }
+    }
+  }
 }
 
 // Check if point is to the right, left, or on the line
+// Right if res > 0
+// Edge if res == 0
+// left if res < 0
 // c is the point to check
-function edge(ax, ay, ba, by, cx, cy) {
-  return (cx-ax)*(by-ay)-(cy-ay)*(bx-ax);
+function edge(ax, ay, bx, by, cx, cy) {
+  return (cx - ax) * (by - ay) - (cy - ay) * (bx - ax);
 }
 
 //
