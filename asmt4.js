@@ -1,14 +1,29 @@
 // Functions you need to write
 function drawLine(x1, y1, x2, y2, r, g, b) {
-  let x0 = x1;
-  let y0 = y1;
-  y1 = y2;
-  x1 = x2;
+  let x0, y0;
+  // Algo must go from left to right
+  console.log(`X: ${x1}, ${x2}\nY: ${y1}, ${y2}`)
+  if (x1 < x2) {
+    // swap!
+    console.log(`Not l to r!`)
+    x0 = x2;
+    y0 = y2;
+  } else {
+    // already l to r
+    x0 = x1;
+    x1 = x2;
+    y0 = y1;
+    y1 = y2;
+  }
 
   // make sure slope is between 0 and 1
-  const slope = Math.abs(y1 - y0) > abs(x1 - x0)
+  let dy = y1 - y0;
+  let dx = x0 - x1;
+  const m = Math.abs(dy / dx);
+  console.log(`dy: ${dy}, dx: ${dx}, ${m}\n${m > 1}`)
 
-  if (slope) {
+  // slope is not! swap coordinates
+  if (m > 1) {
     const temp = [x0, x1];
     x0 = y0;
     x1 = y1;
@@ -18,48 +33,34 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
 
   }
 
-  // Check to see if p1 is to the left of p2
-  if (x1 > x2) {
-    // swap points to go left to right
-    let temp = x0;
-    x0 = x1;
-    x1 = temp;
-
-    temp = y0;
-    y0 = y1;
-    y1 = temp;
-  }
-
-  // calculate change in slope
-  const dy = y2 - y1;
-  const dx = x0 - x1;
+  dy = y1 - y0;
+  dx = Math.abs(x0 - x1);
 
   // east delta
   const dE = 2 * dy;
   // north east delta
   const dNe = 2 * (dy - dx);
-
-  let y = y0;
-  let direction = y0 > y1 ? -1 : 1;
   // decision param: east or north east
   let d = dE - dx; // 2*dy-dx
-  for (let x = x0; x <= x1; x++) {
-    if (slope) {
-      setPixel(y, x, r, g, b);
-    } else {
-      setPixel(x, y, r, g, b);
-    }
 
+  console.log(`dx: ${dx}\ndy: ${dy}\nDE: ${dE}\ndNE: ${dNe}\nd: ${d}`);
+
+  let x = x0, y = y0;
+  const yDir = y0 > y1 ? -1 : 1;
+
+  for (x; x <= x1; x++) {
+    m < 1 ? setPixel(x, y, r, g, b) : setPixel(y, x, r, g, b);
     // update decision param
     if (d <= 0) {
       // Choose e
       d += dE;
     } else {
       // choose NE
-      y += direction;
+      y += yDir;
       d += dNe;
     }
   }
+  console.log(`Final D: ${d}`)
 
 }
 
@@ -215,13 +216,13 @@ function drawTheLines() {
     translate(canvasx, canvasy);
 
     line(line1[0], line1[1], line1[2], line1[3]);
-    line(line2[0], line2[1], line2[2], line2[3]);
-    line(line3[0], line3[1], line3[2], line3[3]);
-    line(line4[0], line4[1], line4[2], line4[3]);
-    line(line5[0], line5[1], line5[2], line5[3]);
-    line(line6[0], line6[1], line6[2], line6[3]);
-    line(line7[0], line7[1], line7[2], line7[3]);
-    line(line8[0], line8[1], line8[2], line8[3]);
+    // line(line2[0], line2[1], line2[2], line2[3]);
+    // line(line3[0], line3[1], line3[2], line3[3]);
+    // line(line4[0], line4[1], line4[2], line4[3]);
+    // line(line5[0], line5[1], line5[2], line5[3]);
+    // line(line6[0], line6[1], line6[2], line6[3]);
+    // line(line7[0], line7[1], line7[2], line7[3]);
+    // line(line8[0], line8[1], line8[2], line8[3]);
   }
 
   else {
@@ -235,27 +236,27 @@ function drawTheLines() {
     drawLine(line1[0] + canvasx, line1[1] + canvasy,
       line1[2] + canvasx, line1[3] + canvasy,
       myr, myg, myb);
-    drawLine(line2[0] + canvasx, line2[1] + canvasy,
-      line2[2] + canvasx, line2[3] + canvasy,
-      myr, myg, myb);
-    drawLine(line3[0] + canvasx, line3[1] + canvasy,
-      line3[2] + canvasx, line3[3] + canvasy,
-      myr, myg, myb);
-    drawLine(line4[0] + canvasx, line4[1] + canvasy,
-      line4[2] + canvasx, line4[3] + canvasy,
-      myr, myg, myb);
-    drawLine(line5[0] + canvasx, line5[1] + canvasy,
-      line5[2] + canvasx, line5[3] + canvasy,
-      myr, myg, myb);
-    drawLine(line6[0] + canvasx, line6[1] + canvasy,
-      line6[2] + canvasx, line6[3] + canvasy,
-      myr, myg, myb);
-    drawLine(line7[0] + canvasx, line7[1] + canvasy,
-      line7[2] + canvasx, line7[3] + canvasy,
-      myr, myg, myb);
-    drawLine(line8[0] + canvasx, line8[1] + canvasy,
-      line8[2] + canvasx, line8[3] + canvasy,
-      myr, myg, myb);
+    // drawLine(line2[0] + canvasx, line2[1] + canvasy,
+    //   line2[2] + canvasx, line2[3] + canvasy,
+    //   myr, myg, myb);
+    // drawLine(line3[0] + canvasx, line3[1] + canvasy,
+    //   line3[2] + canvasx, line3[3] + canvasy,
+    //   myr, myg, myb);
+    // drawLine(line4[0] + canvasx, line4[1] + canvasy,
+    //   line4[2] + canvasx, line4[3] + canvasy,
+    //   myr, myg, myb);
+    // drawLine(line5[0] + canvasx, line5[1] + canvasy,
+    //   line5[2] + canvasx, line5[3] + canvasy,
+    //   myr, myg, myb);
+    // drawLine(line6[0] + canvasx, line6[1] + canvasy,
+    //   line6[2] + canvasx, line6[3] + canvasy,
+    //   myr, myg, myb);
+    // drawLine(line7[0] + canvasx, line7[1] + canvasy,
+    //   line7[2] + canvasx, line7[3] + canvasy,
+    //   myr, myg, myb);
+    // drawLine(line8[0] + canvasx, line8[1] + canvasy,
+    //   line8[2] + canvasx, line8[3] + canvasy,
+    //   myr, myg, myb);
   }
 
 }
