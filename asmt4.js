@@ -1,40 +1,69 @@
+firstLoop = true;
+function logger(message) {
+  if (firstLoop) { console.log(message) }
+}
+
 // Functions you need to write
 function drawLine(x1, y1, x2, y2, r, g, b) {
   let x0, y0;
   // Algo must go from left to right
-  console.log(`X: ${x1}, ${x2}\nY: ${y1}, ${y2}`)
-  if (x1 < x2) {
+  logger(`p1: ${x1}, ${y1}\np2: ${x2}, ${y2}`)
+  if (x1 > x2) {
     // swap!
-    console.log(`Not l to r!`)
+    logger(`Not l to r!`)
     x0 = x2;
     y0 = y2;
   } else {
     // already l to r
+    logger(`LR`)
     x0 = x1;
-    x1 = x2;
     y0 = y1;
+
+    x1 = x2;
     y1 = y2;
   }
 
+  logger(`p0: ${x0}, ${y0}\np1: ${x1}, ${y1}`)
+
+  // blue Start point
+  fill(0, 0, 255)
+  circle(x0, y0, 5)
+
+  // purple end point
+  fill(100, 0, 200)
+  circle(x1, y1, 5)
+
   // make sure slope is between 0 and 1
   let dy = y1 - y0;
-  let dx = x0 - x1;
-  const m = Math.abs(dy / dx);
-  console.log(`dy: ${dy}, dx: ${dx}, ${m}\n${m > 1}`)
+  let dx = x1 - x0;
+  const m = dy / dx;
+  const validSlope = (m <= 1 && m >= -1);
+  logger(`dy: ${dy}\ndx: ${dx}\nslope:${m}\nvalid slope: ${validSlope}`)
 
   // slope is not! swap coordinates
-  if (m > 1) {
-    const temp = [x0, x1];
+  if (!validSlope) {
+    let temp = x0;
     x0 = y0;
-    x1 = y1;
+    y0 = temp;
 
-    y0 = temp[0];
-    y1 = temp[1];
+    temp = x1;
+    x1 = y1;
+    y1 = temp;
+
+    logger(`Update Coords\np0: ${x0}, ${y0}\np1: ${x1}, ${y1}`)
 
   }
 
-  dy = y1 - y0;
-  dx = Math.abs(x0 - x1);
+  // red Start point
+  fill(255, 0, 0)
+  circle(x0, y0, 5)
+
+  // Green end point
+  fill(0, 255, 0)
+  circle(x1, y1, 5)
+
+  dy = Math.abs(y1 - y0);
+  dx = x1 - x0;
 
   // east delta
   const dE = 2 * dy;
@@ -43,13 +72,15 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
   // decision param: east or north east
   let d = dE - dx; // 2*dy-dx
 
-  console.log(`dx: ${dx}\ndy: ${dy}\nDE: ${dE}\ndNE: ${dNe}\nd: ${d}`);
+  logger(`dE = ${dE} = 2 * ${y1} - ${y0}`)
+  logger(`dNe =${dNe} = 2 * ((${y1} - ${y0})- (${x1}-${x0}))`)
+  logger(`CALC END\ndx: ${dx}\ndy: ${dy}\nDE: ${dE}\ndNE: ${dNe}\nd: ${d}`);
 
   let x = x0, y = y0;
   const yDir = y0 > y1 ? -1 : 1;
 
   for (x; x <= x1; x++) {
-    m < 1 ? setPixel(x, y, r, g, b) : setPixel(y, x, r, g, b);
+    !validSlope ? setPixel(y, x, r, g, b) : setPixel(x, y, r, g, b);
     // update decision param
     if (d <= 0) {
       // Choose e
@@ -60,7 +91,6 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
       d += dNe;
     }
   }
-  console.log(`Final D: ${d}`)
 
 }
 
@@ -114,8 +144,6 @@ function setPixel(x, y, r, g, b) {
   // drawTheLine and drawThePolys)
   point(x, y);
 }
-
-
 
 function drawCanvas() {
 
@@ -197,14 +225,9 @@ function drawThePolys() {
 
 
   }
-
-
-
 }
 
 function drawTheLines() {
-
-
   // If doProcessing is true, we'll let processing draw the lines
   // otherwise, we will use our algorithm.
   if (doProcessing) {
@@ -214,15 +237,14 @@ function drawTheLines() {
 
     // adjust for axes
     translate(canvasx, canvasy);
-
-    line(line1[0], line1[1], line1[2], line1[3]);
-    // line(line2[0], line2[1], line2[2], line2[3]);
-    // line(line3[0], line3[1], line3[2], line3[3]);
-    // line(line4[0], line4[1], line4[2], line4[3]);
-    // line(line5[0], line5[1], line5[2], line5[3]);
-    // line(line6[0], line6[1], line6[2], line6[3]);
-    // line(line7[0], line7[1], line7[2], line7[3]);
-    // line(line8[0], line8[1], line8[2], line8[3]);
+    //line(line1[0], line1[1], line1[2], line1[3]);
+    //line(line2[0], line2[1], line2[2], line2[3]);
+    //line(line3[0], line3[1], line3[2], line3[3]);
+    //line(line4[0], line4[1], line4[2], line4[3]);
+    //line(line5[0], line5[1], line5[2], line5[3]);
+    line(line6[0], line6[1], line6[2], line6[3]);
+    //line(line7[0], line7[1], line7[2], line7[3]);
+    //line(line8[0], line8[1], line8[2], line8[3]);
   }
 
   else {
@@ -233,9 +255,9 @@ function drawTheLines() {
 
     // we'll need to adjust all vertices to account for axes
     // explicitely.
-    drawLine(line1[0] + canvasx, line1[1] + canvasy,
-      line1[2] + canvasx, line1[3] + canvasy,
-      myr, myg, myb);
+    // drawLine(line1[0] + canvasx, line1[1] + canvasy,
+    //   line1[2] + canvasx, line1[3] + canvasy,
+    //   myr, myg, myb);
     // drawLine(line2[0] + canvasx, line2[1] + canvasy,
     //   line2[2] + canvasx, line2[3] + canvasy,
     //   myr, myg, myb);
@@ -248,15 +270,15 @@ function drawTheLines() {
     // drawLine(line5[0] + canvasx, line5[1] + canvasy,
     //   line5[2] + canvasx, line5[3] + canvasy,
     //   myr, myg, myb);
-    // drawLine(line6[0] + canvasx, line6[1] + canvasy,
-    //   line6[2] + canvasx, line6[3] + canvasy,
-    //   myr, myg, myb);
-    // drawLine(line7[0] + canvasx, line7[1] + canvasy,
-    //   line7[2] + canvasx, line7[3] + canvasy,
-    //   myr, myg, myb);
-    // drawLine(line8[0] + canvasx, line8[1] + canvasy,
-    //   line8[2] + canvasx, line8[3] + canvasy,
-    //   myr, myg, myb);
+    drawLine(line6[0] + canvasx, line6[1] + canvasy,
+      line6[2] + canvasx, line6[3] + canvasy,
+      myr, myg, myb);
+    //drawLine(line7[0] + canvasx, line7[1] + canvasy,
+    //  line7[2] + canvasx, line7[3] + canvasy,
+    //  myr, myg, myb);
+    //drawLine(line8[0] + canvasx, line8[1] + canvasy,
+    //  line8[2] + canvasx, line8[3] + canvasy,
+    //  myr, myg, myb);
   }
 
 }
@@ -299,7 +321,7 @@ function draw() {
   drawCanvas();
 
   // draw lines or poly
-  if (doLines) drawTheLines();
+  if (doLines) { drawTheLines(); firstLoop = false; }
   else drawThePolys();
 }
 
