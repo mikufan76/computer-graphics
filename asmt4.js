@@ -115,7 +115,7 @@ function drawTriangle(p1x, p1y, p2x, p2y, p3x, p3y, r, g, b) {
       const w2 = edge(p3.x, p3.y, p1.x, p1.y, x, y);
 
       if (w1 > 0 && w0 > 0 && w2 > 0) {
-        setPixel(x, y, 255, 0, 0)
+        setPixel(x, y, r, g, b)
       }
     }
   }
