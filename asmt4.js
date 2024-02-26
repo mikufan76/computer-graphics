@@ -78,9 +78,14 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
 }
 
 function drawTriangle(p1x, p1y, p2x, p2y, p3x, p3y, r, g, b) {
-
+  
 }
 
+// Check if point is to the right, left, or on the line
+// c is the point to check
+function edge(ax, ay, ba, by, cx, cy) {
+  return (cx-ax)*(by-ay)-(cy-ay)*(bx-ax);
+}
 
 //
 //
@@ -304,8 +309,8 @@ function draw() {
   drawCanvas();
 
   // draw lines or poly
-  if (doLines) { drawTheLines(); firstLoop = false; }
-  else drawThePolys();
+  if (doLines) drawTheLines();
+  else { drawThePolys(); firstLoop = false; }
 }
 
 function keyPressed() {
