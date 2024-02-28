@@ -101,8 +101,15 @@ function drawTriangle(p1x, p1y, p2x, p2y, p3x, p3y, r, g, b) {
   fill(0, 0, 255,)
   circle(p3.x, p3.y, 5)
 
+  let m = p3.y - p2.y / p3.x - p2.x;
+  logger(m)
 
-  logger(JSON.stringify(egg));
+  if (m > 0 && p1.x > p2.x && p1.x > p3.x
+    && p1.y < p2.y && p1.y < p3.y && p3.y < p2.y && p3.x > p2.x) {
+    let temp = p2;
+    p2 = p3;
+    p3 = temp;
+  }
 
 
   const xMin = xCoords[0].x, xMax = xCoords[2].x;
