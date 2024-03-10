@@ -1,21 +1,76 @@
-// You need to fill in the following functions.
-function drawArtwork() {
-    const brown = [119, 45, 18];
-    background(...brown);
-    setBround(.70);
-    setBround(.90);
+const colorPalette = {
+    bgBrownTop: [119, 45, 18, 1],
+    bgBrownBottom: [66, 32, 10, 1],
+    lightYellow: [222, 192, 121],
+    brightYellow: [252, 195, 56],
+
+}
+let firstLoop = false;
+
+function logger(message) {
+    if (!firstLoop) console.log(message);
 }
 
-function drawBackground() {}
+// You need to fill in the following functions.
+function drawArtwork() {
+    drawBackground();
+    drawPaintSplatters(.5, 255, .65, ...colorPalette.lightYellow)
+    drawPaintSplatters(.5, .1, .7, ...colorPalette.brightYellow)
 
-function drawWarhol() {}
+    // setBround(.70);
+    // setBround(.90);
+}
 
-function drawZoom() {}
+function setPixelOpacity(x, y, r, g, b, a) {
+    let calcOpacity = 10 * a;
+    for (let i = 0; i < calcOpacity; i++) {
+        setPixel(x, y, r, g, b);
+    }
+}
+
+function drawBackground() {
+    const top = color(...colorPalette.bgBrownTop);
+    const bottom = color(...colorPalette.bgBrownBottom);
+
+    for (let x = 0; x < width; x++) {
+        for (let y = 0; y < height; y++) {
+            const interA = lerpColor(top, bottom, y / height);
+            const r = interA._array[0] * interA.maxes["rgb"][0];
+            const g = interA._array[1] * interA.maxes["rgb"][1];
+            const b = interA._array[2] * interA.maxes["rgb"][2];
+            setPixelOpacity(x, y, r, g, b, 1)
+        }
+    }
+}
+
+function drawPaintSplatters(max, noiseScale, a, r, g, b) {
+    for (let y = 0; y < height; y += 1) {
+        for (let x = 0; x < width; x += 1) {
+            // Scale input coordinates.
+            let nx = noiseScale * x;
+            let ny = noiseScale * y;
+
+            // Compute noise value.
+            const alpha = a * noise(nx, ny);
+            if (alpha > max) {
+                setPixelOpacity(x, y, r, g, b, alpha);
+            }
+        }
+    }
+}
+
+function drawPeople() {
+    drawRect(157, 18, 316 - 157, 410, 191, 123, 11)
+}
+
+
+function drawWarhol() { }
+
+function drawZoom() { }
 
 function setBround(scale) {
-    const yellow = [241, 222, 112];
-    let noiseScale = 0.4;
-    let noisey = 1;
+    const yellow = [222, 192, 121];
+
     for (let y = 0; y < height; y += 1) {
         for (let x = 0; x < width; x += 1) {
             // Scale input coordinates.
@@ -25,12 +80,72 @@ function setBround(scale) {
             // Compute noise value.
             const alpha = noisey * noise(nx, ny);
             if (alpha > scale) {
-                setPixel(x, y, yellow[0], yellow[1], yellow[2]);
+                setPixel(x, y, 252, 195, 56);
+                setPixel(x, y, 252, 195, 56);
+
+
             }
         }
     }
 
+
+    for (let y = 0; y < height; y += 3) {
+        for (let x = 0; x < width; x += 3) {
+            // Scale input coordinates.
+            let nx = noiseScale * x;
+            let ny = noiseScale * y;
+
+            // Compute noise value.
+            // TODO
+            // Convert to create rectangle/circle
+            const alpha = noisey * noise(nx, ny);
+            if (alpha > .8) {
+
+
+            }
+        }
+    }
+
+    // drawPoly(20, 20, 20, 200, 200, 20, 300, 200, 255, 0, 0)
+
+
+
+
     describe('A gray cloudy pattern.');
+}
+
+function drawRect(x, y, width, height, r, g, b) {
+    drawPoly(x, y, x + width, y, x + width, y + height, x, y + height, r, g, b)
+}
+
+function drawPoly(x1, y1, x2, y2, x3, y3, x4, y4, r, g, b) {
+
+    const points = [
+        { x: x1, y: y1 },
+        { x: x2, y: y2 },
+        { x: x3, y: y3 },
+        { x: x4, y: y4 }
+    ];
+    let yCoords = [
+        ...points.sort((a, b) => {
+            let res = a.y - b.y;
+            if (res === 0) {
+                res = a.x - b.x;
+            }
+            return res;
+        }),
+    ];
+    let coords = yCoords.splice(0, 3);
+    logger(JSON.stringify(coords));
+    drawTriangle(...coords, r, g, b);
+    coords.shift();
+    coords.push(yCoords.pop());
+    drawTriangle(...coords, r, g, b);
+    drawLine(coords[0].x, coords[0].y, coords[1].x, coords[1].y, r, g, b);
+
+    logger(JSON.stringify(coords));
+
+    logger(`---------------------`);
 }
 
 function drawLine(x1, y1, x2, y2, r, g, b) {
@@ -92,7 +207,13 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
 
     for (x; x <= x1; x++) {
         // logger(`Plot: ${x},${y}`)
-        !validSlope ? setPixel(y, x, r, g, b) : setPixel(x, y, r, g, b);
+        if (!validSlope) {
+            setPixel(y, x, r, g, b)
+            setPixel(y, x, r, g, b)
+        } else {
+            setPixel(x, y, r, g, b);
+            setPixel(x, y, r, g, b);
+        }
         // update decision param
         if (d <= 0) {
             // Choose e
@@ -105,13 +226,21 @@ function drawLine(x1, y1, x2, y2, r, g, b) {
     }
 }
 
-function drawTriangle(p1x, p1y, p2x, p2y, p3x, p3y, r, g, b) {
-    const points = [
-        { x: p1x, y: p1y },
-        { x: p2x, y: p2y },
-        { x: p3x, y: p3y },
-    ];
+// Check if point is to the right, left, or on the line
+// Right if res > 0
+// Edge if res == 0
+// left if res < 0
+// c is the point to check
+function edge(ax, ay, bx, by, cx, cy) {
+    return (cx - ax) * (by - ay) - (cy - ay) * (bx - ax);
+}
 
+function calcAngle(x, y) {
+    return (Math.atan2(y, x) * 180) / Math.PI;
+}
+
+function drawTriangle(p1, p2, p3, r, g, b) {
+    points = [p1, p2, p3];
     const xCoords = [
         ...points.sort((a, b) => {
             return a.x - b.x;
@@ -130,33 +259,16 @@ function drawTriangle(p1x, p1y, p2x, p2y, p3x, p3y, r, g, b) {
     // Order points in counter-clockwise order
     // start with smallest y coordinate
     let startPoint = yCoords[0];
-    const egg = ([p1, p2, p3] = [
-        startPoint,
-        ...xCoords.filter((point) => point !== startPoint),
-    ]);
-    fill(255, 0, 0);
-    circle(p1.x, p1.y, 5);
-    fill(0, 255, 0);
-    circle(p2.x, p2.y, 5);
-    fill(0, 0, 255);
-    circle(p3.x, p3.y, 5);
 
-    let m = p3.y - p2.y / p3.x - p2.x;
-    logger(m);
 
-    if (
-        m > 0 &&
-        p1.x > p2.x &&
-        p1.x > p3.x &&
-        p1.y < p2.y &&
-        p1.y < p3.y &&
-        p3.y < p2.y &&
-        p3.x > p2.x
-    ) {
-        let temp = p2;
-        p2 = p3;
-        p3 = temp;
-    }
+    const orderedCoords = [p1, p2, p3] = [startPoint, ...(yCoords.slice(1, 3).sort((a, b) => {
+        const a1 = calcAngle(a.y - startPoint.y, a.x - startPoint.x);
+        const a2 = calcAngle(b.y - startPoint.y, b.x - startPoint.x);
+        logger(`A1: ${a1} < A2: ${a2} = ${a1 > a2}`)
+        return a1 > a2;
+    }))];
+
+    logger(orderedCoords);
 
     const xMin = xCoords[0].x,
         xMax = xCoords[2].x;
@@ -170,6 +282,12 @@ function drawTriangle(p1x, p1y, p2x, p2y, p3x, p3y, r, g, b) {
             const w2 = edge(p3.x, p3.y, p1.x, p1.y, x, y);
 
             if (w1 > 0 && w0 > 0 && w2 > 0) {
+                setPixel(x, y, r, g, b);
+                setPixel(x, y, r, g, b);
+                setPixel(x, y, r, g, b);
+                setPixel(x, y, r, g, b);
+                setPixel(x, y, r, g, b);
+                setPixel(x, y, r, g, b);
                 setPixel(x, y, r, g, b);
             }
         }
@@ -187,17 +305,26 @@ function setPixel(x, y, r, g, b) {
     point(x, y);
 }
 
+let img
+
+function preload() {
+    img = loadImage('./kith.jpg')
+}
+
 function setup() {
-    createCanvas(500, 500);
+    createCanvas(500, 509);
+
+    // image(img, 0, 0, width, height);
     noLoop();
 }
 
 function draw() {
-    background(220);
+    //background(220);
 
     if (whichDraw == 1) drawArtwork();
     if (whichDraw == 2) drawWarhol();
     if (whichDraw == 3) drawZoom();
+    firstLoop = true;
 }
 
 function keyPressed() {
@@ -206,4 +333,8 @@ function keyPressed() {
     if (key == '3') whichDraw = 3;
 
     redraw();
+}
+
+function mouseClicked() {
+    console.log(`${mouseX}, ${mouseY}`)
 }
