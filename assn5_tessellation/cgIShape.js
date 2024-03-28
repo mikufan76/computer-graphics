@@ -7,29 +7,30 @@
 function makeCube(subdivisions) {
     // fill in your code here.
     // delete the code below first.
-    console.log(subdivisions)
-    subdiv = subdivisions
+    console.log(subdivisions);
+    subdiv = subdivisions;
     guys = {};
-    div = .5 / subdivisions
+    dist = 0.5 / subdivisions;
     for (let i = 0; i < subdiv; i++) {
         for (let j = 0; j < subdiv; j++) {
-            let x = i/subdiv
-            let y = j/subdiv
+            let subX = i/subdivisions
+            let subY = j/subdivisions
 
-            lt = [x-div,y-div, 0];
-            rt = [div+x,y-div, 0];
-            lb = [x-div, y+div, 0]
-            rb = [x+div,y+div,.0]
+            let x = -.5 + subX
+            let y = -.5 + subY
 
-            pos = `${i},${j}`
-            guys[pos] = [lt,rt,rb,lb]
+            let p1 = [x,y, -.5]
+            let p2 = [x+subX,y, -.5]
+            pos = `${i},${j}`;
+            guys[pos] = {
+                initPoints: { x, y },
+            };
 
-
-            addTriangle(...lt, ...rt, ...lb);
-            addTriangle(...rt, ...rb,...lb)
+            // addTriangle(...lt, ...rt, ...lb);
+            // addTriangle(...rt, ...rb, ...lb);
         }
     }
-    console.log(JSON.stringify(guys))
+    console.log(JSON.stringify(guys, null, 2));
 }
 
 //
