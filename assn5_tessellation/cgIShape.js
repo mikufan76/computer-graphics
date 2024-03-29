@@ -10,27 +10,73 @@ function makeCube(subdivisions) {
     console.log(subdivisions);
     subdiv = subdivisions;
     guys = {};
-    dist = 0.5 / subdivisions;
-    for (let i = 0; i < subdiv; i++) {
-        for (let j = 0; j < subdiv; j++) {
-            let subX = i/subdivisions
-            let subY = j/subdivisions
+    dist = 1 / subdivisions
 
-            let x = -.5 + subX
-            let y = -.5 + subY
+    // One face
 
-            let p1 = [x,y, -.5]
-            let p2 = [x+subX,y, -.5]
-            pos = `${i},${j}`;
-            guys[pos] = {
-                initPoints: { x, y },
-            };
+    for (let i = 0; i < subdivisions; i++) {
+        for (let j = 0; j < subdivisions; j++) {
+            let u = i / subdivisions;
+            let v = j / subdivisions;
 
-            // addTriangle(...lt, ...rt, ...lb);
-            // addTriangle(...rt, ...rb, ...lb);
+            const [x, y] = getQuadPoint(u, v, [-.5, -.5], [.5, -.5], [-.5, .5], [.5, .5])
+            w = x + dist;
+            z = y + dist;
+
+            let p1 = [x, y, -.5]
+            let p2 = [w, y, -.5]
+            let p3 = [w, z, -.5]
+            let p4 = [x, z, -.5]
+            addTriangle(...p1, ...p2, ...p3)
+            addTriangle(...p1, ...p3, ...p4)
+
+            p1 = [x, y, .5]
+            p2 = [w, y, .5]
+            p3 = [w, z, .5]
+            p4 = [x, z, .5]
+            addTriangle(...p3, ...p2, ...p1)
+            addTriangle(...p4, ...p3, ...p1)
+
+            p1 = [x, .5, y]
+            p2 = [w, .5, y]
+            p3 = [w, .5, z]
+            p4 = [x, .5, z]
+            addTriangle(...p1, ...p2, ...p3)
+            addTriangle(...p1, ...p3, ...p4)
+
+            p1 = [x, -.5, y]
+            p2 = [w, -.5, y]
+            p3 = [w, -.5, z]
+            p4 = [x, -.5, z]
+            addTriangle(...p3, ...p2, ...p1)
+            addTriangle(...p4, ...p3, ...p1)
+
+            p1 = [.5, x, y]
+            p2 = [.5, w, y]
+            p3 = [.5, w, z]
+            p4 = [.5, x, z]
+            addTriangle(...p3, ...p2, ...p1)
+            addTriangle(...p4, ...p3, ...p1)
+
+            p1 = [-.5, x, y]
+            p2 = [-.5, w, y]
+            p3 = [-.5, w, z]
+            p4 = [-.5, x, z]
+            addTriangle(...p1, ...p2, ...p3)
+            addTriangle(...p1, ...p3, ...p4)
         }
     }
-    console.log(JSON.stringify(guys, null, 2));
+}
+
+function getQuadPoint(u, v, p1, p2, p3, p4) {
+    x = 1 - u;
+    q = [(x * p1[0]) + (u * p2[0]), (x * p1[1]) + (u * p2[1])]
+    r = [(x * p3[0]) + (u * p4[0]), (x * p3[1]) + (u * p4[1])]
+
+    x = 1 - v;
+    q = [q[0] * x, q[1] * x]
+    r = [r[0] * v, r[1] * v]
+    return [q[0] + r[0], q[1] + r[1]]
 }
 
 //
@@ -41,7 +87,54 @@ function makeCube(subdivisions) {
 //heightdivision.
 //
 function makeCylinder(radialdivision, heightdivision) {
-    // fill in your code here.
+    r = .25;
+    const step = 360 / radialdivision;
+    const heightStep = 1/heightdivision
+    console.log(heightdivision)
+    // radians = deg * pi/180
+
+    slices = []
+    for (let i = 0; i < 360; i += step) {
+        rads = degToRad(i)
+        x = getCirclePoint(r, rads, -.5)
+        slices.push(x)
+    }
+
+    // base
+    for (let i = 0; i < slices.length; i++) {
+        const [x1, z1] = slices[i];
+        const next = (i + 1) % radialdivision
+        const [x2, z2] = slices[next];
+        let y = .5;
+        addTriangle(x1, y, z1, x2, y, z2, 0, y, 0);
+        addTriangle(x2, -y, z2, x1, -y, z1, 0, -y, 0);
+
+        for (let j = 0; j < heightdivision; j++) {
+            height = .5 - j / heightdivision
+            let p1 = [x1, height, z1];
+            let p2 = [x2, height, z2];
+            let p3 = [x1, height-heightStep, z1]
+            addTriangle(...p2, ...p1, ...p3)
+
+            p1 = [x1, height-heightStep, z1];
+            p2 = [x2, height-heightStep, z2];
+            p3 = [x2, height, z2]
+            addTriangle(...p1, ...p2, ...p3)
+
+        }
+    }
+
+
+
+
+}
+
+function degToRad(num) {
+    return num * Math.PI / 180;
+}
+
+function getCirclePoint(r, theta, pos) {
+    return [r * Math.cos(theta), r * Math.sin(theta)]
 }
 
 //
