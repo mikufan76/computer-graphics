@@ -10,7 +10,7 @@ function makeCube(subdivisions) {
     console.log(subdivisions);
     subdiv = subdivisions;
     guys = {};
-    dist = 1 / subdivisions
+    const dist = 1 / subdivisions
 
     // One face
 

@@ -52,10 +52,7 @@ class Cube extends cgIShape {
     makeCube(subdivisions) {
         // fill in your code here.
         // delete the code below first.
-        console.log(subdivisions);
-        subdiv = subdivisions;
-        guys = {};
-        dist = 1 / subdivisions;
+        const dist = 1 / subdivisions;
 
         // One face
 
@@ -64,7 +61,7 @@ class Cube extends cgIShape {
                 let u = i / subdivisions;
                 let v = j / subdivisions;
 
-                const [x, y] = getQuadPoint(
+                const points = this.getQuadPoint(
                     u,
                     v,
                     [-0.5, -0.5],
@@ -72,58 +69,61 @@ class Cube extends cgIShape {
                     [-0.5, 0.5],
                     [0.5, 0.5]
                 );
-                w = x + dist;
-                z = y + dist;
+
+                const x = points[0];
+                const y = points[1];
+                const w = x + dist;
+                const z = y + dist;
 
                 let p1 = [x, y, -0.5];
                 let p2 = [w, y, -0.5];
                 let p3 = [w, z, -0.5];
                 let p4 = [x, z, -0.5];
-                addTriangle(...p1, ...p2, ...p3);
-                addTriangle(...p1, ...p3, ...p4);
+                this.addTriangle(...p1, ...p2, ...p3);
+                this.addTriangle(...p1, ...p3, ...p4);
 
                 p1 = [x, y, 0.5];
                 p2 = [w, y, 0.5];
                 p3 = [w, z, 0.5];
                 p4 = [x, z, 0.5];
-                addTriangle(...p3, ...p2, ...p1);
-                addTriangle(...p4, ...p3, ...p1);
+                this.addTriangle(...p3, ...p2, ...p1);
+                this.addTriangle(...p4, ...p3, ...p1);
 
                 p1 = [x, 0.5, y];
                 p2 = [w, 0.5, y];
                 p3 = [w, 0.5, z];
                 p4 = [x, 0.5, z];
-                addTriangle(...p1, ...p2, ...p3);
-                addTriangle(...p1, ...p3, ...p4);
+                this.addTriangle(...p1, ...p2, ...p3);
+                this.addTriangle(...p1, ...p3, ...p4);
 
                 p1 = [x, -0.5, y];
                 p2 = [w, -0.5, y];
                 p3 = [w, -0.5, z];
                 p4 = [x, -0.5, z];
-                addTriangle(...p3, ...p2, ...p1);
-                addTriangle(...p4, ...p3, ...p1);
+                this.addTriangle(...p3, ...p2, ...p1);
+                this.addTriangle(...p4, ...p3, ...p1);
 
                 p1 = [0.5, x, y];
                 p2 = [0.5, w, y];
                 p3 = [0.5, w, z];
                 p4 = [0.5, x, z];
-                addTriangle(...p3, ...p2, ...p1);
-                addTriangle(...p4, ...p3, ...p1);
+                this.addTriangle(...p3, ...p2, ...p1);
+                this.addTriangle(...p4, ...p3, ...p1);
 
                 p1 = [-0.5, x, y];
                 p2 = [-0.5, w, y];
                 p3 = [-0.5, w, z];
                 p4 = [-0.5, x, z];
-                addTriangle(...p1, ...p2, ...p3);
-                addTriangle(...p1, ...p3, ...p4);
+                this.addTriangle(...p1, ...p2, ...p3);
+                this.addTriangle(...p1, ...p3, ...p4);
             }
         }
     }
 
     getQuadPoint(u, v, p1, p2, p3, p4) {
-        x = 1 - u;
-        q = [x * p1[0] + u * p2[0], x * p1[1] + u * p2[1]];
-        r = [x * p3[0] + u * p4[0], x * p3[1] + u * p4[1]];
+        let x = 1 - u;
+        let q = [x * p1[0] + u * p2[0], x * p1[1] + u * p2[1]];
+        let r = [x * p3[0] + u * p4[0], x * p3[1] + u * p4[1]];
 
         x = 1 - v;
         q = [q[0] * x, q[1] * x];
@@ -158,20 +158,20 @@ class Cylinder extends cgIShape {
             const next = (i + 1) % radialdivision;
             const [x2, z2] = slices[next];
             let y = 0.5;
-            addTriangle(x1, y, z1, x2, y, z2, 0, y, 0);
-            addTriangle(x2, -y, z2, x1, -y, z1, 0, -y, 0);
+            this.addTriangle(x1, y, z1, x2, y, z2, 0, y, 0);
+            this.addTriangle(x2, -y, z2, x1, -y, z1, 0, -y, 0);
 
             for (let j = 0; j < heightdivision; j++) {
                 height = 0.5 - j / heightdivision;
                 let p1 = [x1, height, z1];
                 let p2 = [x2, height, z2];
                 let p3 = [x1, height - heightStep, z1];
-                addTriangle(...p2, ...p1, ...p3);
+                this.addTriangle(...p2, ...p1, ...p3);
 
                 p1 = [x1, height - heightStep, z1];
                 p2 = [x2, height - heightStep, z2];
                 p3 = [x2, height, z2];
-                addTriangle(...p1, ...p2, ...p3);
+                this.addTriangle(...p1, ...p2, ...p3);
             }
         }
     }
