@@ -139,16 +139,16 @@ class Cylinder extends cgIShape {
     }
 
     makeCylinder(radialdivision, heightdivision) {
-        r = 0.25;
+        let r = 0.25;
         const step = 360 / radialdivision;
         const heightStep = 1 / heightdivision;
         console.log(heightdivision);
         // radians = deg * pi/180
 
-        slices = [];
+        let slices = [];
         for (let i = 0; i < 360; i += step) {
-            rads = degToRad(i);
-            x = getCirclePoint(r, rads, -0.5);
+            const rads = this.degToRad(i);
+            const x = this.getCirclePoint(r, rads, -0.5);
             slices.push(x);
         }
 
@@ -162,7 +162,7 @@ class Cylinder extends cgIShape {
             this.addTriangle(x2, -y, z2, x1, -y, z1, 0, -y, 0);
 
             for (let j = 0; j < heightdivision; j++) {
-                height = 0.5 - j / heightdivision;
+                const height = 0.5 - j / heightdivision;
                 let p1 = [x1, height, z1];
                 let p2 = [x2, height, z2];
                 let p3 = [x1, height - heightStep, z1];
