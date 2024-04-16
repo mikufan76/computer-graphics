@@ -60,6 +60,17 @@ function bindVAO(shape, program) {
     gl.enableVertexAttribArray(program.aBary);
     gl.vertexAttribPointer(program.aBary, 3, gl.FLOAT, false, 0, 0);
 
+    // create and bind normal buffer
+    let myNormalBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myNormalBuffer);
+    gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array(shape.normals),
+        gl.STATIC_DRAW
+    );
+    gl.enableVertexAttribArray(program.aNormal);
+    gl.vertexAttribPointer(program.aNormal, 3, gl.FLOAT, false, 0, 0);
+
     // Setting up the IBO
     let myIndexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
@@ -117,11 +128,19 @@ function setUpPhong(program) {
     // the gl useProgram function
     gl.useProgram(program);
 
-    fragColor = vec4(0.5, 0.5, 0.5, 1.0);
-    // if on the edge, draw black, otherwsie, draw grey
-    if (vbc.x < 0.02 || vbc.y < 0.02 || vbc.z < 0.02) {
-        fragColor = mat4.vec4(1.0, 1.0, 1.0, 1.0);
-    }
+    gl.uniform3fv(program.ambientLight, glMatrix.vec3.fromValues(1, 1, 1));
+    gl.uniform3fv(program.lightPosition, glMatrix.vec3.fromValues(10, 10, 10));
+    gl.uniform3fv(program.lightColor, glMatrix.vec3.fromValues(1, 1, 0));
+    gl.uniform3fv(program.baseColor, glMatrix.vec3.fromValues(0.5, 0.1, 0.3));
+    gl.uniform3fv(
+        program.specHighlightColor,
+        glMatrix.vec3.fromValues(1, 1, 1)
+    );
+
+    gl.uniform1f(program.ka, 1);
+    gl.uniform1f(program.kd, 1);
+    gl.uniform1f(program.ks, 1);
+    gl.uniform1f(program.ke, 1);
 
     //
     // set values for all your uniform variables
