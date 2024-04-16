@@ -117,37 +117,11 @@ function setUpPhong(program) {
     // the gl useProgram function
     gl.useProgram(program);
 
-//      let normalInterp = ;  // Surface normal
-// varying vec3 vertPos;       // Vertex position
-// uniform int mode;   // Rendering mode
-// uniform float Ka;   // Ambient reflection coefficient
-// uniform float Kd;   // Diffuse reflection coefficient
-// uniform float Ks;   // Specular reflection coefficient
-// uniform float shininessVal; // Shininess
-// // Material color
-// uniform vec3 ambientColor;
-// uniform vec3 diffuseColor;
-// uniform vec3 specularColor;
-// uniform vec3 lightPos; // Light position
-
-//   vec3 N = normalize(normalInterp);
-//   vec3 L = normalize(lightPos - vertPos);
-
-//   // Lambert's cosine law
-//   float lambertian = max(dot(N, L), 0.0);
-//   float specular = 0.0;
-//   if(lambertian > 0.0) {
-//     vec3 R = reflect(-L, N);      // Reflected light vector
-//     vec3 V = normalize(-vertPos); // Vector to viewer
-//     // Compute the specular term
-//     float specAngle = max(dot(R, V), 0.0);
-//     specular = pow(specAngle, shininessVal);
-
-//   gl_FragColor = vec4(Ka * ambientColor +
-//                       Kd * lambertian * diffuseColor +
-//                       Ks * specular * specularColor, 1.0);
-// }
-
+    fragColor = vec4(0.5, 0.5, 0.5, 1.0);
+    // if on the edge, draw black, otherwsie, draw grey
+    if (vbc.x < 0.02 || vbc.y < 0.02 || vbc.z < 0.02) {
+        fragColor = mat4.vec4(1.0, 1.0, 1.0, 1.0);
+    }
 
     //
     // set values for all your uniform variables
