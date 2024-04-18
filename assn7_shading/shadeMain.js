@@ -98,31 +98,20 @@ function setUpPhong(program) {
     // the gl useProgram function
     gl.useProgram(program);
 
-    gl.uniform3fv(program.ambientLight, glMatrix.vec3.fromValues(1, 1, 1));
-    gl.uniform3fv(program.lightPosition, glMatrix.vec3.fromValues(10, 10, 10));
-    gl.uniform3fv(program.lightColor, glMatrix.vec3.fromValues(1, 1, 0));
-    gl.uniform3fv(program.baseColor, glMatrix.vec3.fromValues(0.5, 0.1, 0.3));
+    gl.uniform3fv(program.ambientLight, glMatrix.vec3.fromValues(.6,.7, .8));
+    gl.uniform3fv(program.lightPosition, glMatrix.vec3.fromValues(2, 20, 1));
+    gl.uniform3fv(program.lightColor, glMatrix.vec3.fromValues(.8, .2, 0));
+    gl.uniform3fv(program.baseColor, glMatrix.vec3.fromValues(.8, 0, 0.2));
     gl.uniform3fv(
         program.specHighlightColor,
-        glMatrix.vec3.fromValues(1, 1, 1)
+        glMatrix.vec3.fromValues(.7, .8, .2)
     );
 
-    gl.uniform1f(program.ka, 1);
-    gl.uniform1f(program.kd, 1);
-    gl.uniform1f(program.ks, 1);
-    gl.uniform1f(program.ke, 1);
+    gl.uniform1f(program.ka, .8);
+    gl.uniform1f(program.kd, .2);
+    gl.uniform1f(program.ks, .9);
+    gl.uniform1f(program.ke, .9);
 
-    //
-    // set values for all your uniform variables
-    // including the model transform
-    // but not your view and projection transforms as
-    // they are set in setUpCamera()
-    //
-
-    // set up your model transform...Add transformations
-    // if you are moiving, scaling, or rotating the object.
-    // Default is no transformations at all (identity matrix).
-    //
     let modelMatrix = glMatrix.mat4.create();
     gl.uniformMatrix4fv(program.uModelT, false, modelMatrix);
 }
@@ -140,23 +129,15 @@ function setUpCamera(program) {
     // function useProgram.
     gl.useProgram(program);
     // set up your projection
-    // defualt is orthographic projection
     let projMatrix = glMatrix.mat4.create();
-    // glMatrix.mat4.ortho(projMatrix, -5, 5, -5, 5, 1.0, 300.0);
     glMatrix.mat4.perspective(projMatrix, radians(70), -1, 1.0, 300.0);
 
     gl.uniformMatrix4fv(program.uProjT, false, projMatrix);
 
     // set up your view
-    // defaut is at (0,0,-5) looking at the origin
     let viewMatrix = glMatrix.mat4.create();
-    // glMatrix.mat4.lookAt(viewMatrix, [0, -2, -5], [0, 0, 0], [0, 1, 0]);
     glMatrix.mat4.lookAt(viewMatrix, [0, 2, -5], [0, 0, 0], [0, 1, 0]);
     gl.uniformMatrix4fv(program.uViewT, false, viewMatrix);
-
-    // set up your projection
-
-    // set up your view
 }
 
 ///////////////////////////////////////////////////////////////////
