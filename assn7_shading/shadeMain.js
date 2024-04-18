@@ -47,18 +47,7 @@ function bindVAO(shape, program) {
         gl.STATIC_DRAW
     );
     gl.enableVertexAttribArray(program.aVertexPosition);
-    gl.vertexAttribPointer(program.aVertexPosition, 4, gl.FLOAT, false, 0, 0);
-
-    // create and bind bary buffer
-    let myBaryBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, myBaryBuffer);
-    gl.bufferData(
-        gl.ARRAY_BUFFER,
-        new Float32Array(shape.bary),
-        gl.STATIC_DRAW
-    );
-    gl.enableVertexAttribArray(program.aBary);
-    gl.vertexAttribPointer(program.aBary, 3, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(program.aVertexPosition, 3, gl.FLOAT, false, 0, 0);
 
     // create and bind normal buffer
     let myNormalBuffer = gl.createBuffer();
@@ -86,25 +75,6 @@ function bindVAO(shape, program) {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
     return theVAO;
-
-    // create, bind, and fill buffer for vertex locations
-    // vertex locations can be obtained from the points member of the
-    // shape object.  3 floating point values (x,y,z) per vertex are
-    // stored in this array.
-
-    // create, bind, and fill buffer for normal values
-    // normals can be obtained from the normals member of the
-    // shape object.  3 floating point values (x,y,z) per vertex are
-    // stored in this array.
-
-    // Setting up element array
-    // element indicies can be obtained from the indicies member of the
-    // shape object.  3 values per triangle are stored in this
-    // array.
-
-    // Do cleanup
-
-    // return the VAO
 }
 
 //
