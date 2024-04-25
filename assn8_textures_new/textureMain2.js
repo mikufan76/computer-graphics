@@ -9,6 +9,7 @@
 
   // the textures
   let worldTexture;
+  let grassTexture;
 
   // VAOs for the objects
   var mySphere = null;
@@ -51,10 +52,19 @@ function setUpTextures(){
 
     // load the actual image
     const worldImage = new Image();
-    worldImage.src = 'grass.jpeg';
+    worldImage.src = '1_earth_16k.jpg';
 
     worldImage.onload = () => {
         doLoad (worldTexture, worldImage);
+    };
+
+    // load the actual image
+    grassTexture = gl.createTexture();
+    const grassImage = new Image();
+    grassImage.src = 'grass.jpeg';
+
+    grassImage.onload = () => {
+        doLoad (grassTexture, grassImage);
     };
 }
 
@@ -81,8 +91,23 @@ function drawCurrentShape () {
     // set up texture uniform & other uniforms that you might
     // have added to the shader
     gl.activeTexture (gl.TEXTURE0);
-    // gl.bindTexture (gl.TEXTURE_2D, worldTexture);
-    gl.uniform1i (program.uTheTexture, 0);
+
+    // valid values = "globe", "myimage" or "proc"
+    switch (curTexture) {
+      case "globe":
+        gl.bindTexture (gl.TEXTURE_2D, worldTexture);
+        gl.uniform1i (program.uTheTexture, 0);
+        gl.uniform1i (program.textureChoice, 0.0);
+        break;
+      case "myimage":
+        gl.bindTexture (gl.TEXTURE_2D, grassTexture);
+        gl.uniform1i (program.uTheTexture, 0);
+        gl.uniform1i (program.uTextureChoice, 0.0);
+        break;
+      case "proc":
+        gl.uniform1i (program.uTextureChoice, 1.0);
+        break;
+    }
 
     // set up rotation uniform
     gl.uniform3fv (program.uTheta, new Float32Array(angles));

@@ -70,6 +70,10 @@
 
          // the texture to use
          uniform sampler2D theTexture;
+         uniform sampler2D grassTexture;
+
+         // what texture ?
+         uniform float textureChoice;
 
          // Color that is the result of this shader
          out vec4 fragColor;
@@ -84,7 +88,7 @@
           }
 
          void main(void) {
-             fragColor = customTexture(theUV);
+             fragColor = (textureChoice == 0.0) ? texture(theTexture, theUV) : customTexture(theUV);
          }
     </script>
 
