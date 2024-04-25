@@ -97,15 +97,15 @@ function drawCurrentShape () {
       case "globe":
         gl.bindTexture (gl.TEXTURE_2D, worldTexture);
         gl.uniform1i (program.uTheTexture, 0);
-        gl.uniform1i (program.textureChoice, 0.0);
+        gl.uniform1i (program.textureChoice, 0);
         break;
       case "myimage":
         gl.bindTexture (gl.TEXTURE_2D, grassTexture);
         gl.uniform1i (program.uTheTexture, 0);
-        gl.uniform1i (program.uTextureChoice, 0.0);
+        gl.uniform1i (program.TextureChoice, 0);
         break;
       case "proc":
-        gl.uniform1i (program.uTextureChoice, 1.0);
+        gl.uniform1i(program.uTextureChoice, 1);
         break;
     }
 
@@ -148,6 +148,7 @@ function initProgram (vertexid, fragmentid) {
   // uniforms that you add to your shaders
   program.uTheTexture = gl.getUniformLocation (program, 'theTexture');
   program.uTheta = gl.getUniformLocation (program, 'theta');
+  program.uTextureChoice = gl.getUniformLocation (program, 'textureChoice');
 
   return program;
 }
