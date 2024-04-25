@@ -81,7 +81,7 @@ function drawCurrentShape () {
     // set up texture uniform & other uniforms that you might
     // have added to the shader
     gl.activeTexture (gl.TEXTURE0);
-    gl.bindTexture (gl.TEXTURE_2D, worldTexture);
+    // gl.bindTexture (gl.TEXTURE_2D, worldTexture);
     gl.uniform1i (program.uTheTexture, 0);
 
     // set up rotation uniform
