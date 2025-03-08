@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://c8ou0jugxpde7"]
+
+[ext_resource type="Shader" path="res://paper.gdshader" id="1_m1sxd"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_krstf"]
+noise_type = 0
+frequency = 0.0093
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8kmqr"]
+bump_strength = 1.4
+normalize = false
+noise = SubResource("FastNoiseLite_krstf")
+
+[sub_resource type="Gradient" id="Gradient_08cio"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gttiy"]
+gradient = SubResource("Gradient_08cio")
+fill_from = Vector2(1, 0.010453)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dssva"]
+render_priority = 0
+shader = ExtResource("1_m1sxd")
+shader_parameter/height = 0.159
+shader_parameter/x_scrunch = 0.77
+shader_parameter/y_scrunch = 0.293
+shader_parameter/z_scrunch = 1.0
+shader_parameter/x_offset = 0.044
+shader_parameter/bump_strength = 0.01
+shader_parameter/x_folds = 2
+shader_parameter/noise = SubResource("NoiseTexture2D_8kmqr")
+shader_parameter/normalmap = SubResource("GradientTexture2D_gttiy")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_vqlg8"]
+material = SubResource("ShaderMaterial_dssva")
+subdivide_width = 10
+subdivide_depth = 19
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.987867, 0.142997, 0.0605816, -0.142555, 0.989719, -0.011579, -0.0616145, 0.00280235, 0.998096, -0.0027871, -0.855774, 0.0847257)
+mesh = SubResource("PlaneMesh_vqlg8")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.999474, 0.03244, 0, -0.03244, 0.999474, 0.541926, 0, 0)
+light_energy = 3.454
