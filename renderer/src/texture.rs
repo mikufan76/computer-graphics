@@ -1,5 +1,5 @@
 // texture.rs
-use image::{GenericImageView, Rgb, RgbImage};
+use image::{Rgb, RgbImage};
 use std::error::Error;
 
 // Load a texture from a file
