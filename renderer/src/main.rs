@@ -15,7 +15,7 @@ static ORIGIN: Vector3<f32> = Vector3::new(1.0, 1.0, 1.0);
 const WIDTH: u32 = 500;
 const HEIGHT: u32 = 500;
 
-static DEBUG_MODE: bool = true;
+static DEBUG_MODE: bool = false;
 
 static LINE_DEPTH: f32 = 10.0;
 static LINE_WIDTH: f32 = 0.4;

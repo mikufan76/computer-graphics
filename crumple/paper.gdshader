@@ -12,6 +12,22 @@ uniform float bump_strength: hint_range(0.0, 4.0) = 0.01;
 uniform int x_folds: hint_range(0, 20) = 2;
 
 
+
+
+
+// https://godotshaders.com/shader/glass-shatter-impact-points/
+
+// Hash function for randomness
+float hash(vec3 p) {
+	return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453);
+}
+
+// Get deterministic feature point of a Voronoi cell
+vec3 get_feature_point(vec3 cell) {
+	vec3 f = cell + vec3(hash(cell.xyz), hash(cell.yzx), hash(cell.zxy));
+	return f;
+}
+
 float random (vec2 uv) {
     return fract(sin(dot(uv.xy,
         vec2(12.9898,78.233))) * 43758.5453123);

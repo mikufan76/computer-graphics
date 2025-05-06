@@ -1,7 +1,6 @@
 use crate::material::Material;
-use crate::{LINE_DEPTH, LINE_HEIGHT, LINE_WIDTH, ORIGIN};
-use nalgebra::{abs, point, ComplexField, Vector3};
-use std::ops::{Add, Div, Sub};
+use crate::{LINE_HEIGHT, LINE_WIDTH};
+use nalgebra::{ComplexField, Vector3};
 
 pub(crate) struct Ray {
     origin: Vector3<f32>,
@@ -19,6 +18,12 @@ impl Ray {
 
     pub fn point_at(&self, t: f32) -> Vector3<f32> {
         self.origin + t * self.direction
+    }
+
+    pub fn reflect(&self, point: Vector3<f32>, ray:Ray, normal: Vector3<f32>) -> Ray {
+        let scaled = normal.scale(2.0 * ray.direction.dot(&normal));
+        let new_dir =  ray.direction - scaled;
+        return Ray::new(point, new_dir)
     }
 
     // pub fn reflect(&self, hit_point: Vector3<f32>) -> Vector3<f32> {

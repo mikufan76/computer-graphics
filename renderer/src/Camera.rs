@@ -39,10 +39,10 @@ impl Camera {
         for shape_ref in shapes.iter() {
             let shape = *shape_ref;
             let (dist, pt, norm) = shape.intersect(&ray);
-            hit_point = pt;
 
             if dist < closest_dist {
                 closest_dist = dist;
+                hit_point = pt;
                 // This is correct, but let's ensure it's normalized
                 collided = true;
                 hit_shape = Some(shape);
