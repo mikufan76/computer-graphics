@@ -1,71 +1,209 @@
-[gd_scene load_steps=12 format=3 uid="uid://c8ou0jugxpde7"]
+[gd_scene load_steps=21 format=3 uid="uid://c8ou0jugxpde7"]
 
-[ext_resource type="Shader" path="res://glass.gdshader" id="1_7rlbw"]
-[ext_resource type="Shader" path="res://paper.gdshader" id="2_5n83u"]
+[ext_resource type="Shader" path="res://paperv2.gdshader" id="1_7rlbw"]
+[ext_resource type="Texture2D" uid="uid://0xjlswq3l3w4" path="res://wood-texture-png-6-3034692771.png" id="2_i1oyc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bgu33"]
+render_priority = 0
+shader = ExtResource("1_7rlbw")
+shader_parameter/row_count = 20
+shader_parameter/col_count = 17
+shader_parameter/smoothness = 0.841
+shader_parameter/height_scale = 1.383
+shader_parameter/max_height = 2.033
+shader_parameter/x_scrunch = 0.921
+shader_parameter/z_scrunch = 0.53
+shader_parameter/pinch_start = 0.0
+shader_parameter/pinch_end = 0.0
+shader_parameter/pinch_offset = 2.0
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/intensity = 1.0
+shader_parameter/brightness = 0.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wwfjg"]
+material = SubResource("ShaderMaterial_bgu33")
+size = Vector2(8, 8)
+subdivide_width = 13
+subdivide_depth = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_poral"]
+render_priority = 0
+shader = ExtResource("1_7rlbw")
+shader_parameter/row_count = 8
+shader_parameter/col_count = 3
+shader_parameter/smoothness = 0.0
+shader_parameter/height_scale = 0.229
+shader_parameter/max_height = 0.209
+shader_parameter/x_scrunch = 0.964
+shader_parameter/z_scrunch = 0.763
+shader_parameter/pinch_start = 0.0
+shader_parameter/pinch_end = 0.0
+shader_parameter/pinch_offset = 2.0
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/intensity = 0.0
+shader_parameter/brightness = 0.324
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_skois"]
+material = SubResource("ShaderMaterial_poral")
+subdivide_width = 3
+subdivide_depth = 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dssva"]
 render_priority = 0
 shader = ExtResource("1_7rlbw")
-shader_parameter/row_count = 7
-shader_parameter/col_count = 0
-shader_parameter/smoothness = 0.476
-shader_parameter/height_scale = 0.909
-shader_parameter/max_height = 2.0
-shader_parameter/x_offset = 2.0
-shader_parameter/x_scrunch = 1.0
-shader_parameter/z_scrunch = 1.0
-shader_parameter/pinch_start = 0.0
+shader_parameter/row_count = 11
+shader_parameter/col_count = 16
+shader_parameter/smoothness = 0.0
+shader_parameter/height_scale = 0.463
+shader_parameter/max_height = 1.047
+shader_parameter/x_scrunch = 0.979
+shader_parameter/z_scrunch = 0.489
+shader_parameter/pinch_start = 0.264
 shader_parameter/pinch_end = 0.0
+shader_parameter/pinch_offset = 2.123
+shader_parameter/color = Color(0.654902, 0.827451, 0.835294, 1)
+shader_parameter/intensity = 0.0
+shader_parameter/brightness = 0.167
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_vqlg8"]
 material = SubResource("ShaderMaterial_dssva")
 uv2_padding = 3.0
-subdivide_width = 3
+subdivide_width = 5
+subdivide_depth = 5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1c1gp"]
+render_priority = 0
+shader = ExtResource("1_7rlbw")
+shader_parameter/row_count = 7
+shader_parameter/col_count = 9
+shader_parameter/smoothness = 0.146
+shader_parameter/height_scale = 0.21
+shader_parameter/max_height = 0.845
+shader_parameter/x_scrunch = 0.96
+shader_parameter/z_scrunch = 1.0
+shader_parameter/pinch_start = 0.0
+shader_parameter/pinch_end = 0.0
+shader_parameter/pinch_offset = 2.0
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/intensity = 0.416
+shader_parameter/brightness = 0.109
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_c3wya"]
+material = SubResource("ShaderMaterial_1c1gp")
+subdivide_width = 7
 subdivide_depth = 3
 
-[sub_resource type="Gradient" id="Gradient_7q3ko"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_3hd8u"]
-frequency = 0.0078
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mhwj6"]
-color_ramp = SubResource("Gradient_7q3ko")
-noise = SubResource("FastNoiseLite_3hd8u")
-
-[sub_resource type="Gradient" id="Gradient_nlat6"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_hsjmb"]
-gradient = SubResource("Gradient_nlat6")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_643nd"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ypxql"]
 render_priority = 0
-shader = ExtResource("2_5n83u")
-shader_parameter/height = 0.66
-shader_parameter/x_scrunch = 0.57
-shader_parameter/y_scrunch = 0.0
-shader_parameter/z_scrunch = 0.68
-shader_parameter/x_offset = 0.203
-shader_parameter/bump_strength = 0.0
-shader_parameter/x_folds = 4
-shader_parameter/noise = SubResource("NoiseTexture2D_mhwj6")
-shader_parameter/normalmap = SubResource("GradientTexture2D_hsjmb")
+shader = ExtResource("1_7rlbw")
+shader_parameter/row_count = 1
+shader_parameter/col_count = 0
+shader_parameter/smoothness = 0.02
+shader_parameter/height_scale = 1.0
+shader_parameter/max_height = 1.0
+shader_parameter/x_scrunch = 1.0
+shader_parameter/z_scrunch = 1.0
+shader_parameter/pinch_start = 0.0
+shader_parameter/pinch_end = 0.0
+shader_parameter/pinch_offset = 2.0
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/intensity = 1.0
+shader_parameter/brightness = 0.0
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_bxf6g"]
-material = SubResource("ShaderMaterial_643nd")
-subdivide_width = 10
-subdivide_depth = 10
+[sub_resource type="PlaneMesh" id="PlaneMesh_fyhes"]
+material = SubResource("ShaderMaterial_ypxql")
+subdivide_width = 20
+subdivide_depth = 20
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hj5b1"]
+render_priority = 0
+shader = ExtResource("1_7rlbw")
+shader_parameter/row_count = 7
+shader_parameter/col_count = 19
+shader_parameter/smoothness = 0.076
+shader_parameter/height_scale = 0.436
+shader_parameter/max_height = 1.508
+shader_parameter/x_scrunch = 0.61
+shader_parameter/z_scrunch = 0.9
+shader_parameter/pinch_start = 0.0
+shader_parameter/pinch_end = 0.0
+shader_parameter/pinch_offset = 2.0
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/intensity = 1.0
+shader_parameter/brightness = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_1uxv2"]
+material = SubResource("ShaderMaterial_hj5b1")
+subdivide_width = 9
+subdivide_height = 6
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xv5he"]
+render_priority = 0
+shader = ExtResource("1_7rlbw")
+shader_parameter/row_count = 11
+shader_parameter/col_count = 16
+shader_parameter/smoothness = 0.146
+shader_parameter/height_scale = 0.21
+shader_parameter/max_height = 0.271
+shader_parameter/x_scrunch = 0.829
+shader_parameter/z_scrunch = 0.438
+shader_parameter/pinch_start = 0.255
+shader_parameter/pinch_end = 0.775
+shader_parameter/pinch_offset = 2.52
+shader_parameter/color = Color(0.905882, 0.647059, 0.298039, 1)
+shader_parameter/intensity = 0.371
+shader_parameter/brightness = 0.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_5p1o3"]
+material = SubResource("ShaderMaterial_xv5he")
+subdivide_width = 5
+subdivide_depth = 5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gwkav"]
+albedo_texture = ExtResource("2_i1oyc")
+
+[sub_resource type="ImageTexture" id="ImageTexture_stk6x"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wkhl4"]
+albedo_texture = SubResource("ImageTexture_stk6x")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ra5dh"]
+material = SubResource("StandardMaterial3D_wkhl4")
 
 [node name="Node3D" type="Node3D"]
 
-[node name="paper v2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.99999, 0.00428568, 0.000198896, -0.00428613, 0.999988, 0.00230282, -0.000189047, -0.00230365, 0.999997, -0.122835, 4.88864, 0.209184)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.327647, 0.9448, 0, -0.9448, -0.327647, 8.35484, -6.31425, 4.30896)
+
+[node name="X Scrunch" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2781, -14.1599, 1.25905)
+mesh = SubResource("PlaneMesh_wwfjg")
+
+[node name="flat" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 7.08017, -14.1643, 1.24788)
+mesh = SubResource("PlaneMesh_skois")
+
+[node name="Pinch" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.412343, -0.00770617, 2.97152, -0.00514409, 2.99998, 0.00849388, -2.97152, -0.00626273, 0.412327, 13.7175, -14.3484, 2.52734)
 mesh = SubResource("PlaneMesh_vqlg8")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.291654, 0.956524, 0, -0.956524, -0.291654, 0.541926, 7.48985, 0)
-light_energy = 0.415
+[node name="fabric" type="MeshInstance3D" parent="."]
+transform = Transform3D(4, 0.00212441, -0.00390699, -0.00212483, 4, -0.000429884, 0.00390676, 0.000431959, 4, 10.7868, -14.354, 11.1721)
+mesh = SubResource("PlaneMesh_c3wya")
 
-[node name="paper v1" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.999952, -0.00980062, -0.000419756, 0.00979966, 0.999949, -0.00223842, 0.000441678, 0.0022342, 0.999997, 0.24332, 4.3891, -1.23299)
-visible = false
-mesh = SubResource("PlaneMesh_bxf6g")
+[node name="Too many sub divisions!" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 1.99278, -0.169756, 0, 0.169756, 1.99278, 1.60365, -13.8778, 12.0103)
+mesh = SubResource("PlaneMesh_fyhes")
+
+[node name="cube" type="MeshInstance3D" parent="."]
+transform = Transform3D(3.9939, -0.0126007, 0.0258275, 0.0252683, 3.24955, -2.32203, -0.0136877, 2.32214, 3.24954, -3.1667, -11.9895, 11.8607)
+mesh = SubResource("BoxMesh_1uxv2")
+
+[node name="secret" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.196799, 0, 1.99029, 0, 2, 0, -1.99029, 0, 0.196799, 17.0168, -14.3365, 3.2423)
+mesh = SubResource("PlaneMesh_5p1o3")
+
+[node name="table" type="MeshInstance3D" parent="."]
+transform = Transform3D(27, 0, 0, 0, 2, 0, 0, 0, 21, 5, -15.4434, 6.14214)
+material_override = SubResource("StandardMaterial3D_gwkav")
+mesh = SubResource("BoxMesh_ra5dh")
