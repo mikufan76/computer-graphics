@@ -102,9 +102,6 @@ vec4 soft_light(vec4 base, vec4 blend) {
 }
 
 void fragment() {
-  float perlin_a = perlin_noise(tex_position);
-  float perlin_b = perlin_noise(tex_position*2.0);
-
   float normal = height/max_height;
   normal += current_voronoi* intensity;
   normal = clamp(normal, brightness, 1.0);

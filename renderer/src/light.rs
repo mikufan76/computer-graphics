@@ -8,7 +8,8 @@ pub struct Light {
 }
 
 impl Light {
-    pub fn new(position: Vector3<f32>, color: Vector3<f32>, intensity: f32) -> Light {
+    pub fn new(position: Vector3<f32>, color: Vector3<f32>, intensity: f32,) -> Light {
         Light { position, color, intensity }
     }
+    
 }

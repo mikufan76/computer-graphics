@@ -1,6 +1,7 @@
 use crate::light::Light;
-use crate::shape::{Ray, Shape};
-use crate::DEBUG_MODE;
+use crate::ray::Ray;
+use crate::shape::Shape;
+use crate::{AMBIENT, DEBUG_MODE};
 use log::debug;
 use nalgebra::Vector3;
 
@@ -23,47 +24,77 @@ impl Camera {
         };
     }
 
+    /// Get the closest object
+    /// Return: Intersected object (if applicable), collision point, normal, distance
+    pub fn get_closest_obj<'a>(
+        &self,
+        ray: &Ray,
+        shapes: &[&'a dyn Shape],
+    ) -> (Option<&'a dyn Shape>, Vector3<f32>, Vector3<f32>, f32) {
+        let mut closest_distance = f32::INFINITY;
+        let mut hit_shape: Option<&dyn Shape> = None;
+        let mut hit_point: Vector3<f32> = Vector3::zeros();
+        let mut hit_normal = Vector3::zeros();
+
+        for shape in shapes.iter() {
+            let (dist, pt, norm) = shape.intersect(ray);
+
+            if dist < closest_distance {
+                closest_distance = dist;
+                hit_normal = norm;
+                hit_point = pt;
+                hit_shape = Some(shape.clone());
+            }
+        }
+        (hit_shape, hit_point, hit_normal, closest_distance)
+    }
+
+    /// Trace a ray from a speicifed origin to a direction.
     fn trace_ray(
         &self,
         direction: Vector3<f32>,
         shapes: &[&dyn Shape],
-        light: &[Light; 1],
+        lights: &[Light],
     ) -> Vector3<f32> {
         let mut closest_dist = f32::INFINITY;
         let mut collided = false;
         let origin = self.position;
-        let mut hit_shape: Option<&dyn Shape> = None;
-        let mut hit_point: Vector3<f32> = origin;
+
         let ray = Ray::new(origin, direction);
 
-        for shape_ref in shapes.iter() {
-            let shape = *shape_ref;
-            let (dist, pt, norm) = shape.intersect(&ray);
+        let (is_shape, hit_point, normal, distance) = self.get_closest_obj(&ray, shapes);
 
-            if dist < closest_dist {
-                closest_dist = dist;
-                hit_point = pt;
-                // This is correct, but let's ensure it's normalized
-                collided = true;
-                hit_shape = Some(shape);
+        if is_shape.is_some() {
+            let shape = is_shape.unwrap();
+            // let ambient = (shape.ambient_color() as Vector3<f32>) * AMBIENT;
+            let mut diffuse = Vector3::zeros();
+            let mut specular = Vector3::zeros();
+            let material = shape.material();
+
+            for light in lights.iter() {
+                let light_direction = (light.position - hit_point).normalize();
+                let light_ray = Ray::new(hit_point, light_direction);
+
+                let (dist, lit_point, dir) = shape.intersect(&light_ray);
+
+                if dist != f32::INFINITY {
+                    let light_reflection = light_ray.reflect(hit_point, normal);
+                    diffuse +=
+                        material.calc_diffuse(light, is_shape.unwrap(), &light_ray, &normal);
+                    specular += material.calc_specular(light, shape, &light_reflection, &ray);
+                } else {
+                }
             }
-        }
 
-        if !collided {
-            return Vector3::new(BG[0] as f32, BG[1] as f32, BG[2] as f32);
-        }
-
-        if hit_shape.is_some() {
             if (DEBUG_MODE) {
-                return hit_shape.unwrap().debug(hit_point)
+                let debug_color = shape.debug(hit_point);
+                return debug_color;
             }
 
-            let shape = hit_shape.unwrap();
-            let illuminate = shape.illuminate();
-            return  illuminate
+            return AMBIENT + material.diffuse() * diffuse + material.specular() * specular;
         }
 
-        return Vector3::new(0.0, 0.0, 0.0);
+        return Vector3::new(BG[0] as f32, BG[1] as f32, BG[2] as f32);
     }
 
     pub fn render(&self, shapes: &[&dyn Shape], lights: &[Light; 1]) {
