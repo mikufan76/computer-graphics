@@ -73,8 +73,8 @@ fn main() {
     };
 
     // let objects: [&dyn Shape; 1] = [&polygon];
-    // let objects: Vec<&dyn Shape>   = vec![&sphere_2, &sphere_1, &polygon];
-    let objects: Vec<&dyn Shape> = vec![&sphere_1, &sphere_2];
+    let objects: Vec<&dyn Shape>   = vec![&sphere_2, &sphere_1, &polygon];
+    // let objects: Vec<&dyn Shape> = vec![&sphere_1, &sphere_2];
     // let objects: Vec<&dyn Shape> = vec![&sphere_1];
     let light = Light::new(
         Vector3::new(0.0, 19.0, 20.0),
